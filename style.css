@@ -9,3 +9,36 @@
 textarea {
     width: 500px; 
 }
+
+.cryptoBoard {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; 
+    margin: 10px; 
+}
+
+.letterBox {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    color: rgb(52, 46, 46); 
+    background-color: rgb(183, 183, 187, 0.5); 
+    border-radius: 3px;
+    font-size: 20px; 
+    width: 25px; 
+    height: 25px; 
+    box-shadow: 1px 1px 5px 1px grey;
+    margin-top: 10px; 
+}
+
+.blankBox {
+    background-color: transparent; 
+    border-radius: 3px;
+    font-size: 10px; 
+    width: 25px; 
+    height: 25px; 
+
+}
+

@@ -49,7 +49,7 @@ const removePeriodsAndQuotationMarks = (textNoSpaces) => {
 
 
 //////////////
-// CIPHERAlpha
+// CIPHER
 //////////////
 
 const alphaMap = {
@@ -158,6 +158,28 @@ const encodeInputRecursively = (inputToEncode) => {
 }
 
 ////////////////
+// Gen Boxes
+////////////////
+const cryptoBoard = document.querySelector('.cryptoBoard'); 
+
+const genBoxes = () => {
+    console.log(cryptograph); 
+
+    for (character of cryptograph){
+        const newDiv = document.createElement("div"); 
+        if (character === ' '){
+            newDiv.classList.add('blankBox');
+        } else {
+            newDiv.classList.add('letterBox');
+            const newText = document.createTextNode(character);
+            newDiv.appendChild(newText); 
+        } 
+        cryptoBoard.appendChild(newDiv);
+    }
+}
+
+
+////////////////
 // Program Flow
 ////////////////
 const cleanInput = (text) => {
@@ -181,7 +203,7 @@ const handleInput = (userInputText) => {
     encodeInputRecursively(cleanedUserInput);
     
     encodedMsg.innerHTML = cryptograph;
-    // genBoxes(); 
+    genBoxes(cryptograph); 
     // fillBoxes(); 
 
     //remember to reset arrays to ''
