@@ -3,9 +3,11 @@
 ///////////////
 const submit = document.getElementById('submit'); 
 const input = document.getElementById('input'); 
-let output = document.querySelector('.output'); 
+let output = document.querySelector('.output');
+let encodedMsg = document.querySelector('.msg');  
 let textNoSpacesNoPeriodsNoQuotes = '';
 let cleanedUserInput = '';  
+let cryptograph = ''; 
 
 const removeExtraSpaces = (text) => {
     textNoSpaces = text.trim(); 
@@ -38,6 +40,8 @@ const removePeriodsAndQuotationMarks = (textNoSpaces) => {
     console.log(`this is result: ${textNoSpacesNoPeriodsNoQuotes}`);
     // check that this is not a x-scripting vulnerability (use SetHTML instead?)
     output.innerHTML = textNoSpacesNoPeriodsNoQuotes;
+    
+    
 
     return cleanedUserInput = textNoSpacesNoPeriodsNoQuotes; 
 }
@@ -102,7 +106,7 @@ const numMap = {
     w:22,
     x:23,
     y:24,
-    z:25,
+    z:25
 }
 let cipherAlpha = []; 
 let cipherNums = []; 
@@ -112,14 +116,12 @@ const genRandCipher = () => {
     
     while (cipherNums.length < 26){
         randNum = Math.floor(Math.random() * 26)
-        
         if (cipherNums.includes(randNum) == false){
             cipherNums.push(randNum); 
         }
     }
     
     for (let i = 0; i < cipherNums.length; i++){
-        
         cipherAlpha[i] = alphaMap[cipherNums[i]];
     }
     console.log(`cipherNums: ${cipherNums}`); 
@@ -127,26 +129,32 @@ const genRandCipher = () => {
 } 
 
 let encodedArray = []; 
-const encodeInputRecursively = (inputToEncode, cipherNums) => {
+const encodeInputRecursively = (inputToEncode) => {
     let arrayToEncode = inputToEncode.split("");
-    // console.log(`array: ${arrayToEncode}`);
+    console.log(arrayToEncode); 
     let loopCount = arrayToEncode.length; 
-    // refactor to use recursion
     if (arrayToEncode.length == 0){
         return; 
     } else {      
         for (let i = 0; i < loopCount; i++){
-            // console.log(`add to encodedArray: ${cipherAlpha[numMap[arrayToEncode[0]]]}`)
             encodedArray.push(cipherAlpha[numMap[arrayToEncode[0]]]); 
-            // console.log(`before removing 1st pos: ${arrayToEncode}`)
             arrayToEncode.shift(); 
-            // console.log(`after removing 1st pos: ${arrayToEncode}`)
         }
-
-        // console.log(`encodedArray: ${encodedArray}`); 
-        // console.log(`arrayToEncode: ${arrayToEncode}`);   
+        
+        // address spaces
+        let numSpaces = 0; 
+        for (element of encodedArray){
+            if (element === undefined){
+                numSpaces += 1; 
+            }
+        }
+        for (let i = 0; i < numSpaces; i++){
+            indexOfSpace = encodedArray.indexOf(undefined); 
+            encodedArray.splice(indexOfSpace, 1, ' ');
+        }
+        console.log(`encodedArray: ${encodedArray}`); 
     }
-    return encodedArray; 
+    return cryptograph = encodedArray.join('');  
 }
 
 ////////////////
@@ -170,9 +178,13 @@ const handleInput = (userInputText) => {
     cleanInput(text);
     resetInput(); 
     genRandCipher(); 
-    encodeInputRecursively(cleanedUserInput, cipherNums);
+    encodeInputRecursively(cleanedUserInput);
+    
+    encodedMsg.innerHTML = cryptograph;
     // genBoxes(); 
     // fillBoxes(); 
+
+    //remember to reset arrays to ''
 
 }
 
