@@ -4,6 +4,8 @@
 const submit = document.getElementById('submit'); 
 const input = document.getElementById('input'); 
 let output = document.querySelector('.output'); 
+let textNoSpacesNoPeriodsNoQuotes = '';
+let cleanedUserInput = '';  
 
 const removeExtraSpaces = (text) => {
     textNoSpaces = text.trim(); 
@@ -36,39 +38,16 @@ const removePeriodsAndQuotationMarks = (textNoSpaces) => {
     console.log(`this is result: ${textNoSpacesNoPeriodsNoQuotes}`);
     // check that this is not a x-scripting vulnerability (use SetHTML instead?)
     output.innerHTML = textNoSpacesNoPeriodsNoQuotes;
+
+    return cleanedUserInput = textNoSpacesNoPeriodsNoQuotes; 
 }
 
-////////////////
-// Program Flow
-////////////////
-const cleanInput = (text) => {
-    console.log('cleaning input'); 
-    
-    removeExtraSpaces(text);
-    removePeriodsAndQuotationMarks(textNoSpaces); 
-}
-
-const resetInput = () => {
-    input.value = ''; 
-}
-
-const handleInput = (userInputText) => {
-    console.log('user clicked submit');
-    console.log(`original str: ${userInputText}`) 
-    let text = userInputText;
-    cleanInput(text);
-    resetInput(); 
-}
-
-submit.addEventListener('click', ()=>{
-    handleInput(input.value); 
-});
 
 
 //////////////
-// CIPHER
+// CIPHERAlpha
 //////////////
-// const alphaArr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']; 
+
 const alphaMap = {
     0:'a',
     1:'b',
@@ -97,36 +76,114 @@ const alphaMap = {
     24:'y',
     25:'z'
 }
-let cipher = []; 
+const numMap = {
+    a:0,
+    b:1,
+    c:2,
+    d:3,
+    e:4,
+    f:5,
+    g:6,
+    h:7,
+    i:8,
+    j:9,
+    k:10,
+    l:11,
+    m:12,
+    n:13,
+    o:14,
+    p:15,
+    q:16,
+    r:17,
+    s:18,
+    t:19,
+    u:20,
+    v:21,
+    w:22,
+    x:23,
+    y:24,
+    z:25,
+}
+let cipherAlpha = []; 
+let cipherNums = []; 
 
 const genRandCipher = () => {
-    let added = []; 
-    let cipher = []; 
     let randNum = 0; 
-    // Generate random number between 1-26
-    // let randNum = Math.floor(Math.random() * 27)
-    // console.log(randNum); 
-    // Check if number has been used
-        // if used, gen another number
-    // assign number to that index of alphaArr
-    while (added.length < 26){
+    
+    while (cipherNums.length < 26){
         randNum = Math.floor(Math.random() * 26)
-
-        if (added.includes(randNum) == false){
-            added.push(randNum); 
+        
+        if (cipherNums.includes(randNum) == false){
+            cipherNums.push(randNum); 
         }
     }
     
-    for (let i = 0; i < added.length; i++){
+    for (let i = 0; i < cipherNums.length; i++){
         
-        cipher[i] = alphaMap[added[i]];
+        cipherAlpha[i] = alphaMap[cipherNums[i]];
     }
-    console.log(`added: ${added}`); 
-    console.log(`cipher: ${cipher}`); 
+    console.log(`cipherNums: ${cipherNums}`); 
+    console.log(`cipherAlpha: ${cipherAlpha}`); 
 } 
+
+let encodedArray = []; 
+const encodeInputRecursively = (inputToEncode, cipherNums) => {
+    // console.log(`this is cleaned input: ${inputToEncode}`)
+    let arrayToEncode = inputToEncode.split("");
+    console.log(`array: ${arrayToEncode}`);
+    let loopCount = arrayToEncode.length; 
+    // refactor to use recursion
+    if (arrayToEncode.length == 0){
+        return; 
+    } else {      
+        for (let i = 0; i < loopCount; i++){
+            console.log(`add to encodedArray: ${cipherAlpha[numMap[arrayToEncode[0]]]}`)
+            encodedArray.push(cipherAlpha[numMap[arrayToEncode[0]]]); 
+            console.log(`before removing 1st pos: ${arrayToEncode}`)
+            arrayToEncode.shift(); 
+            console.log(`after removing 1st pos: ${arrayToEncode}`)
+        }
+
+        console.log(`encodedArray: ${encodedArray}`); 
+        console.log(`arrayToEncode: ${arrayToEncode}`);
+
+   
+    }
+}
+
+////////////////
+// Program Flow
+////////////////
+const cleanInput = (text) => {
+    console.log('cleaning input'); 
     
-    
+    removeExtraSpaces(text);
+    removePeriodsAndQuotationMarks(textNoSpaces); 
+}
+
+const resetInput = () => {
+    input.value = ''; 
+}
+
+const handleInput = (userInputText) => {
+    console.log('user clicked submit');
+    console.log(`original str: ${userInputText}`) 
+    let text = userInputText;
+    cleanInput(text);
+    resetInput(); 
+    genRandCipher(); 
+    encodeInputRecursively(cleanedUserInput, cipherNums);
+    // genBoxes(); 
+    // fillBoxes(); 
+
+}
+
+submit.addEventListener('click', ()=>{
+    handleInput(input.value); 
+});
 
 
 
-genRandCipher(); 
+
+
+
