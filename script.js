@@ -1,5 +1,6 @@
-const alphaArr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']; 
-
+///////////////
+// Clean Input
+///////////////
 const submit = document.getElementById('submit'); 
 const input = document.getElementById('input'); 
 let output = document.querySelector('.output'); 
@@ -33,9 +34,13 @@ const removePeriodsAndQuotationMarks = (textNoSpaces) => {
     }
     
     console.log(`this is result: ${textNoSpacesNoPeriodsNoQuotes}`);
+    // check that this is not a x-scripting vulnerability (use SetHTML instead?)
     output.innerHTML = textNoSpacesNoPeriodsNoQuotes;
 }
 
+////////////////
+// Program Flow
+////////////////
 const cleanInput = (text) => {
     console.log('cleaning input'); 
     
@@ -60,9 +65,68 @@ submit.addEventListener('click', ()=>{
 });
 
 
+//////////////
+// CIPHER
+//////////////
+// const alphaArr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']; 
+const alphaMap = {
+    0:'a',
+    1:'b',
+    2:'c',
+    3:'d',
+    4:'e',
+    5:'f',
+    6:'g',
+    7:'h',
+    8:'i',
+    9:'j',
+    10:'k',
+    11:'l',
+    12:'m',
+    13:'n',
+    14:'o',
+    15:'p',
+    16:'q',
+    17:'r',
+    18:'s',
+    19:'t',
+    20:'u',
+    21:'v',
+    22:'w',
+    23:'x',
+    24:'y',
+    25:'z'
+}
+let cipher = []; 
 
-// includes
-// slice(1,4) from pos 1 to pos 4 ...i think
-// toLowerCase() / toUpperCase()
-// replace('moz','van') (old, new)
-// substring(1,3) start index to end index
+const genRandCipher = () => {
+    let added = []; 
+    let cipher = []; 
+    let randNum = 0; 
+    // Generate random number between 1-26
+    // let randNum = Math.floor(Math.random() * 27)
+    // console.log(randNum); 
+    // Check if number has been used
+        // if used, gen another number
+    // assign number to that index of alphaArr
+    while (added.length < 26){
+        randNum = Math.floor(Math.random() * 26)
+
+        if (added.includes(randNum) == false){
+            added.push(randNum); 
+        }
+    }
+    
+    for (let i = 0; i < added.length; i++){
+        
+        cipher[i] = alphaMap[added[i]];
+    }
+    console.log(`added: ${added}`); 
+    console.log(`cipher: ${cipher}`); 
+} 
+    
+    
+
+
+
+genRandCipher(); 
