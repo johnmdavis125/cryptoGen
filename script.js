@@ -6,6 +6,7 @@ const input = document.getElementById('input');
 const handleInput = () => {
     console.log('user clicked submit'); 
     console.log(input.value); 
+    input.value = ''; 
 }
 
 submit.addEventListener('click', (event)=>{
