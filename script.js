@@ -128,27 +128,25 @@ const genRandCipher = () => {
 
 let encodedArray = []; 
 const encodeInputRecursively = (inputToEncode, cipherNums) => {
-    // console.log(`this is cleaned input: ${inputToEncode}`)
     let arrayToEncode = inputToEncode.split("");
-    console.log(`array: ${arrayToEncode}`);
+    // console.log(`array: ${arrayToEncode}`);
     let loopCount = arrayToEncode.length; 
     // refactor to use recursion
     if (arrayToEncode.length == 0){
         return; 
     } else {      
         for (let i = 0; i < loopCount; i++){
-            console.log(`add to encodedArray: ${cipherAlpha[numMap[arrayToEncode[0]]]}`)
+            // console.log(`add to encodedArray: ${cipherAlpha[numMap[arrayToEncode[0]]]}`)
             encodedArray.push(cipherAlpha[numMap[arrayToEncode[0]]]); 
-            console.log(`before removing 1st pos: ${arrayToEncode}`)
+            // console.log(`before removing 1st pos: ${arrayToEncode}`)
             arrayToEncode.shift(); 
-            console.log(`after removing 1st pos: ${arrayToEncode}`)
+            // console.log(`after removing 1st pos: ${arrayToEncode}`)
         }
 
-        console.log(`encodedArray: ${encodedArray}`); 
-        console.log(`arrayToEncode: ${arrayToEncode}`);
-
-   
+        // console.log(`encodedArray: ${encodedArray}`); 
+        // console.log(`arrayToEncode: ${arrayToEncode}`);   
     }
+    return encodedArray; 
 }
 
 ////////////////
