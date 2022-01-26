@@ -17,6 +17,23 @@ textarea {
     align-items: center;
     flex-wrap: wrap; 
     margin: 10px; 
+    border: 1px solid rgb(201, 196, 196, 0.3); 
+    border-radius: 5px; 
+}
+
+.wordBox {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    color: rgb(52, 46, 46); 
+    background-color: rgba(226, 226, 232, 0.2); 
+    border-radius: 3px;
+    font-size: 20px; 
+    /* min-width: 150px;  */
+    height: 30px; 
+    box-shadow: 1px 1px 5px 1px rgb(218, 215, 215, 0.2);
+    margin: 10px; 
+    padding: 2px; 
 }
 
 .letterBox {
@@ -30,14 +47,13 @@ textarea {
     width: 25px; 
     height: 25px; 
     box-shadow: 1px 1px 5px 1px grey;
-    margin-top: 10px; 
 }
 
 .blankBox {
     background-color: transparent; 
     border-radius: 3px;
     font-size: 10px; 
-    width: 25px; 
+    width: 50px; 
     height: 25px; 
 
 }

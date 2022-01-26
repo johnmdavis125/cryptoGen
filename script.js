@@ -165,19 +165,31 @@ const cryptoBoard = document.querySelector('.cryptoBoard');
 const genBoxes = () => {
     console.log(cryptograph); 
 
-    for (character of cryptograph){
-        const newDiv = document.createElement("div"); 
-        if (character === ' '){
-            newDiv.classList.add('blankBox');
+    let numWords = cryptograph.split(' ').length; 
+    console.log(`numWords: ${numWords}`);
+
+    for (let i = 0; i < numWords; i++){
+        const wordBox = document.createElement("div");
+        wordBox.classList.add('wordBox'); 
+        wordBox.classList.add(`wordBox-${i}`); 
+        cryptoBoard.appendChild(wordBox); 
+    }
+
+    let currentWordInLoop = 0; 
+    for (let i = 0; i < cryptograph.length; i++){
+        if (cryptograph[i] !== ' '){
+            const letterBox = document.createElement("div"); 
+            letterBox.classList.add('letterBox'); 
+            const letter = document.createTextNode(`${cryptograph[i]}`);
+            letterBox.appendChild(letter); 
+            const theAppropriateWordBox = document.querySelector(`.wordBox-${currentWordInLoop}`); 
+            theAppropriateWordBox.appendChild(letterBox); 
         } else {
-            newDiv.classList.add('letterBox');
-            const newText = document.createTextNode(character);
-            newDiv.appendChild(newText); 
-        } 
-        cryptoBoard.appendChild(newDiv);
+            currentWordInLoop += 1;
+            console.log(`Now on word: ${currentWordInLoop}`);  
+        }
     }
 }
-
 
 ////////////////
 // Program Flow
