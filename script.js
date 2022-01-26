@@ -8,16 +8,17 @@ let encodedMsg = document.querySelector('.msg');
 let textNoSpacesNoPeriodsNoQuotes = '';
 let cleanedUserInput = '';  
 let cryptograph = ''; 
+let specialCharacters = {}; 
+let specialCharArr = [];
 
-const removeExtraSpaces = (text) => {
-    textNoSpaces = text.trim(); 
+const removeExtraSpaces = (userInputText) => {
+    textNoSpaces = userInputText.trim(); 
     console.log(`textNoSpaces: ${textNoSpaces}`); 
     return textNoSpaces;
 }
 
 const removePeriodsAndQuotationMarks = (textNoSpaces) => {
     let textNoSpacesNoPeriods = ''; 
-
     //Remove Periods
     if (textNoSpaces.includes("\.")){
         textNoSpacesNoPeriods = textNoSpaces.substring(0, `${textNoSpaces.length}` -1)
@@ -36,16 +37,77 @@ const removePeriodsAndQuotationMarks = (textNoSpaces) => {
     } else {
         textNoSpacesNoPeriodsNoQuotes = textNoSpacesNoPeriodsNoLeft; 
     }
-    
     console.log(`this is result: ${textNoSpacesNoPeriodsNoQuotes}`);
     // check that this is not a x-scripting vulnerability (use SetHTML instead?)
     output.innerHTML = textNoSpacesNoPeriodsNoQuotes;
-    
-    
-
-    return cleanedUserInput = textNoSpacesNoPeriodsNoQuotes; 
+    return textNoSpacesNoPeriodsNoQuotes; 
 }
 
+const analyzeText = (cleanedUserInput) => {
+    // this function takes notes of which words are capitalized and accounts for special characters in the user input
+    console.log(`this is cleanedUserInput: ${cleanedUserInput}`)
+    let capitalPositions = []; 
+    
+    //make an array that specifies the ascii code designator for each special character -> then access that array when posting the cryptograph to the DOM
+    for (char in cleanedUserInput){
+        const myObj = {
+            pos: char,
+            value: cleanedUserInput[char]
+        }
+        
+        const code = cleanedUserInput.charCodeAt(char);  
+        console.log(`code: ${code}`);
+        
+        if (code > 47 && code < 58){
+            console.log(`position ${char} is a number: ${cleanedUserInput[char]}`);
+            specialCharArr.push(myObj); 
+        } else if (code > 64 && code < 91){
+            console.log(`position ${char} is a capital letter: ${cleanedUserInput[char]}`);
+            // specialCharArr.push(myObj);
+            specialCharArr.push('cap');  
+        } else if (code > 96 && code < 123){
+            console.log(`position ${char} is a lowercase letter: ${cleanedUserInput[char]}`);
+            specialCharArr.push(null);  
+        } else if (code > 32 && code < 48){
+            console.log(`position ${char} is a special character: ${cleanedUserInput[char]}`);
+            specialCharArr.push(myObj); 
+        } else if (code > 57 && code < 65){
+            console.log(`position ${char} is a special character: ${cleanedUserInput[char]}`);
+            specialCharArr.push(myObj); 
+        } else if (code === 32){
+            specialCharArr.push(null); 
+        } else {
+            alert('I\'m sorry, this is an invalid input. Please try again'); 
+        }
+        // specialCharArr[char] = cleanedUserInput[char]; 
+        console.log(`specialCharArr: ${specialCharArr}`); 
+        if (specialCharArr[char]){
+            console.log(`specialCharArr: ${specialCharArr[char].pos}`); 
+            console.log(`specialCharArr: ${specialCharArr[char].value}`); 
+        }
+    } 
+
+    // capital letters -> capitals = [positions]; 
+    for (char in cleanedUserInput){
+        console.log(cleanedUserInput[char]); 
+        if (cleanedUserInput[char] === cleanedUserInput[char].toUpperCase() && cleanedUserInput[char] !== ' '){
+            console.log('capital letter is here')
+            capitalPositions.push(char); 
+        }
+
+        // if (cleanedUserInput[char] === ','){
+
+        // }
+    }
+    console.log(capitalPositions);
+    
+    // specialCharacters.capitals = capitalPositions; 
+    // console.log(specialCharacters); 
+    // special characters -> [?, !, &, -, ..., ,, %, #, @, (, ), =, -, +, $]
+    // numbers!
+    // write methods that re-instate special characters
+    return specialCharacters;  
+}
 
 
 //////////////
@@ -130,8 +192,8 @@ const genRandCipher = () => {
 
 let encodedArray = []; 
 const encodeInputRecursively = (inputToEncode) => {
-    let arrayToEncode = inputToEncode.split("");
-    console.log(arrayToEncode); 
+    let arrayToEncode = inputToEncode.toLowerCase().split("");
+    console.log(`this is arrayToEncode line 196: ${arrayToEncode}`); 
     let loopCount = arrayToEncode.length; 
     if (arrayToEncode.length == 0){
         return; 
@@ -177,28 +239,59 @@ const genBoxes = () => {
 
     let currentWordInLoop = 0; 
     for (let i = 0; i < cryptograph.length; i++){
-        if (cryptograph[i] !== ' '){
+        // try to incorporate specialCharArr
+        console.log(`this is cryptograph on line 243: ${cryptograph}`); 
+        if (specialCharArr[i] === 'cap'){ 
+            const letterBox = document.createElement("div"); 
+            letterBox.classList.add('letterBox'); 
+            const upperCase = cryptograph[i].toUpperCase(); 
+            console.log(`this should be upperCase: ${upperCase}`); 
+            const letter = document.createTextNode(`${upperCase}`);
+            letterBox.appendChild(letter); 
+            const theAppropriateWordBox = document.querySelector(`.wordBox-${currentWordInLoop}`);
+            theAppropriateWordBox.appendChild(letterBox); 
+        } else if (specialCharArr[i]){
+            const letterBox = document.createElement("div");
+            letterBox.classList.add('letterBox'); 
+            const letter = document.createTextNode(`${specialCharArr[i].value}`);
+            letterBox.appendChild(letter); 
+            const theAppropriateWordBox = document.querySelector(`.wordBox-${currentWordInLoop}`);
+            theAppropriateWordBox.appendChild(letterBox);  
+        } else if (cryptograph[i] !== ' '){
             const letterBox = document.createElement("div"); 
             letterBox.classList.add('letterBox'); 
             const letter = document.createTextNode(`${cryptograph[i]}`);
             letterBox.appendChild(letter); 
             const theAppropriateWordBox = document.querySelector(`.wordBox-${currentWordInLoop}`); 
-            theAppropriateWordBox.appendChild(letterBox); 
+            theAppropriateWordBox.appendChild(letterBox);            
         } else {
             currentWordInLoop += 1;
-            console.log(`Now on word: ${currentWordInLoop}`);  
+            console.log(`Now on word: ${currentWordInLoop}`);              
         }
+        
+        // don't touch below
+        // if (cryptograph[i] !== ' '){
+        //     const letterBox = document.createElement("div"); 
+        //     letterBox.classList.add('letterBox'); 
+        //     const letter = document.createTextNode(`${cryptograph[i]}`);
+        //     letterBox.appendChild(letter); 
+        //     const theAppropriateWordBox = document.querySelector(`.wordBox-${currentWordInLoop}`); 
+        //     theAppropriateWordBox.appendChild(letterBox); 
+        // } else {
+        //     currentWordInLoop += 1;
+        //     console.log(`Now on word: ${currentWordInLoop}`);  
+        // }
     }
 }
 
 ////////////////
 // Program Flow
 ////////////////
-const cleanInput = (text) => {
+const cleanInput = (userInputText) => {
     console.log('cleaning input'); 
-    
-    removeExtraSpaces(text);
+    removeExtraSpaces(userInputText);
     removePeriodsAndQuotationMarks(textNoSpaces); 
+    analyzeText(textNoSpacesNoPeriodsNoQuotes);
 }
 
 const resetInput = () => {
@@ -208,11 +301,10 @@ const resetInput = () => {
 const handleInput = (userInputText) => {
     console.log('user clicked submit');
     console.log(`original str: ${userInputText}`) 
-    let text = userInputText;
-    cleanInput(text);
+    cleanInput(userInputText);
     resetInput(); 
     genRandCipher(); 
-    encodeInputRecursively(cleanedUserInput);
+    encodeInputRecursively(textNoSpacesNoPeriodsNoQuotes);
     
     encodedMsg.innerHTML = cryptograph;
     genBoxes(cryptograph); 
@@ -228,6 +320,15 @@ submit.addEventListener('click', ()=>{
 
 
 
+// Re-factor Ideas
+    // Extract out logic for creating DOM elements into a func
+    // Use recursion for cipherGen func
+    // Should only need one charMap for cipher, not two...revisit
+    // abbreviated syntax for if|else (ref: u-course)
+    // revisit variable/func names
+    // spacing & comments
+    // Look for common implementations of cleaning/validating user inputs
+    // Verify no security issues with innerHTML
 
 
 
