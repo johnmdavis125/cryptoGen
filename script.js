@@ -1,16 +1,19 @@
-///////////////
-// Clean Input
-///////////////
 const submit = document.getElementById('submit'); 
 const input = document.getElementById('input'); 
 let output = document.querySelector('.output');
 let encodedMsg = document.querySelector('.msg');  
+let textNoSpaces = ''; 
+let textNoSpacesNoPeriodsNoLeft = ''; 
 let textNoSpacesNoPeriodsNoQuotes = '';
+let indexOfSpace = '';
 let cleanedUserInput = '';  
 let cryptograph = ''; 
 let specialCharacters = {}; 
 let specialCharArr = [];
 
+///////////////
+// Clean Input
+///////////////
 const removeExtraSpaces = (userInputText) => {
     textNoSpaces = userInputText.trim(); 
     console.log(`textNoSpaces: ${textNoSpaces}`); 
@@ -49,7 +52,7 @@ const analyzeText = (cleanedUserInput) => {
     let capitalPositions = []; 
     
     //make an array that specifies the ascii code designator for each special character -> then access that array when posting the cryptograph to the DOM
-    for (char in cleanedUserInput){
+    for (let char in cleanedUserInput){
         const myObj = {
             pos: char,
             value: cleanedUserInput[char]
@@ -88,7 +91,7 @@ const analyzeText = (cleanedUserInput) => {
     } 
 
     // capital letters -> capitals = [positions]; 
-    for (char in cleanedUserInput){
+    for (let char in cleanedUserInput){
         console.log(cleanedUserInput[char]); 
         if (cleanedUserInput[char] === cleanedUserInput[char].toUpperCase() && cleanedUserInput[char] !== ' '){
             console.log('capital letter is here')
@@ -205,7 +208,7 @@ const encodeInputRecursively = (inputToEncode) => {
         
         // address spaces
         let numSpaces = 0; 
-        for (element of encodedArray){
+        for (let element of encodedArray){
             if (element === undefined){
                 numSpaces += 1; 
             }
@@ -284,6 +287,18 @@ const genBoxes = () => {
     }
 }
 
+
+const takeScreenShot = () => {
+    html2canvas(document.getElementById('capture')).then(canvas => {
+        document.body.appendChild(canvas); 
+
+        canvas.toBlob(function(blob) {
+            saveAs(blob, 'cryptoGraphFile.pdf');
+        })
+    })
+}
+
+
 ////////////////
 // Program Flow
 ////////////////
@@ -308,7 +323,8 @@ const handleInput = (userInputText) => {
     
     encodedMsg.innerHTML = cryptograph;
     genBoxes(cryptograph); 
-    // fillBoxes(); 
+    takeScreenShot(); 
+   
 
     //remember to reset arrays to ''
 

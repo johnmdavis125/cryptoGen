@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CryptoGen</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" referrerpolicy="no-referrer"></script>
 </head>
     <div class="container">
         <h1>CryptoGen</h1>
@@ -17,8 +19,8 @@
         <p class="msg">coded message</p>
      
         <div>Here's Your Crytograph!</div>
-        <div class="cryptoBoard"></div>
-            <script src="script.js"></script>
+        <div class="cryptoBoard" id="capture"></div>
+            <script src="script.js" type="module"></script>
     </div>
 </body>
 </html>
