@@ -15,7 +15,9 @@ textarea {
 }
 
 .cryptoBoard {
-    display: flex; 
+    display: none;
+    /* display: flex;  */
+    color: white; 
     flex-direction: row; 
     justify-content: center;
     align-items: center;
@@ -24,6 +26,10 @@ textarea {
     border-radius: 5px; 
     background-color: rgba(6, 18, 66, 0.9);
     box-shadow: 2px 2px 3px 1px rgb(3, 14, 56);
+}
+
+.active {
+    display: flex; 
 }
 
 .wordBox {
@@ -63,3 +69,11 @@ textarea {
 
 }
 
+#submit {
+    padding: 10px 20px;
+    margin-top: 5px;  
+    color: white; 
+    background-color: rgb(17, 112, 201);
+    border-radius: 5px; 
+    box-shadow: 1px 2px 2px 1px grey;
+}

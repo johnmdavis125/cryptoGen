@@ -42,7 +42,7 @@ const removePeriodsAndQuotationMarks = (textNoSpaces) => {
     }
     console.log(`this is result: ${textNoSpacesNoPeriodsNoQuotes}`);
     // check that this is not a x-scripting vulnerability (use SetHTML instead?)
-    output.innerHTML = textNoSpacesNoPeriodsNoQuotes;
+    // output.innerHTML = textNoSpacesNoPeriodsNoQuotes;
     return textNoSpacesNoPeriodsNoQuotes; 
 }
 
@@ -80,7 +80,7 @@ const analyzeText = (cleanedUserInput) => {
         } else if (code === 32){
             specialCharArr.push(null); 
         } else {
-            alert('I\'m sorry, this is an invalid input. Please try again'); 
+            alert('I\'m sorry, this is an invalid input. Please refresh the page & try again'); 
         }
         // specialCharArr[char] = cleanedUserInput[char]; 
         console.log(`specialCharArr: ${specialCharArr}`); 
@@ -218,6 +218,8 @@ const genBoxes = () => {
             console.log(`Now on word: ${currentWordInLoop}`);              
         }
     }
+
+    cryptoBoard.classList.add('active'); 
 }
 
 
@@ -247,20 +249,12 @@ const resetInput = () => {
 }
 
 const handleInput = (userInputText) => {
-    // console.log('user clicked submit');
-    // console.log(`original str: ${userInputText}`) 
     cleanInput(userInputText);
     resetInput(); 
     genRandCipher(); 
     encodeInputRecursively(textNoSpacesNoPeriodsNoQuotes);
-    
-    encodedMsg.innerHTML = cryptograph;
     genBoxes(cryptograph); 
-    takeScreenShot(); 
-   
-
-    //remember to reset arrays to ''
-
+    takeScreenShot();     
 }
 
 submit.addEventListener('click', ()=>{
@@ -272,13 +266,14 @@ submit.addEventListener('click', ()=>{
 // Re-factor Ideas
 // include accounting for blank submission in cleanInput function!    
 // Extract out logic for creating DOM elements into a func
-    // Use recursion for cipherGen func
-    // Should only need one charMap for cipher, not two...revisit
-    // abbreviated syntax for if|else (ref: u-course)
-    // revisit variable/func names
-    // spacing & comments
-    // Look for common implementations of cleaning/validating user inputs
-    // Verify no security issues with innerHTML
+// Use recursion for cipherGen func
+// Should only need one charMap for cipher, not two...revisit
+// abbreviated syntax for if|else (ref: u-course)
+// revisit variable/func names
+// spacing & comments
+// Look for common implementations of cleaning/validating user inputs
+// Verify no security issues with innerHTML
+// remember to reset arrays to ''
 
 
 
