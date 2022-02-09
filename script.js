@@ -41,8 +41,7 @@ const removePeriodsAndQuotationMarks = (textNoSpaces) => {
         textNoSpacesNoPeriodsNoQuotes = textNoSpacesNoPeriodsNoLeft; 
     }
     console.log(`this is result: ${textNoSpacesNoPeriodsNoQuotes}`);
-    // check that this is not a x-scripting vulnerability (use SetHTML instead?)
-    // output.innerHTML = textNoSpacesNoPeriodsNoQuotes;
+    
     return textNoSpacesNoPeriodsNoQuotes; 
 }
 
@@ -97,18 +96,9 @@ const analyzeText = (cleanedUserInput) => {
             console.log('capital letter is here')
             capitalPositions.push(char); 
         }
-
-        // if (cleanedUserInput[char] === ','){
-
-        // }
     }
     console.log(capitalPositions);
-    
-    // specialCharacters.capitals = capitalPositions; 
-    // console.log(specialCharacters); 
-    // special characters -> [?, !, &, -, ..., ,, %, #, @, (, ), =, -, +, $]
-    // numbers!
-    // write methods that re-instate special characters
+
     return specialCharacters;  
 }
 
@@ -152,7 +142,6 @@ const encodeInputRecursively = (inputToEncode) => {
             arrayToEncode.shift(); 
         }
         
-        // address spaces
         let numSpaces = 0; 
         for (let element of encodedArray){
             if (element === undefined){
@@ -274,6 +263,11 @@ submit.addEventListener('click', ()=>{
 // Look for common implementations of cleaning/validating user inputs
 // Verify no security issues with innerHTML
 // remember to reset arrays to ''
-
+// for gen boxes function: reset cryptoBoard to have zero boxes to start -> won't have to refresh the page
+// account for user submit with no entry! 
+    // Text alert when user submits with no text
+    // re-factor to...
+    // inactive submit button vs active (when text input)
+    // while we're at it...move "Enter text in the box" directions to be the text area default text
 
 
