@@ -2,87 +2,81 @@ const submit = document.getElementById('submit');
 const input = document.getElementById('input'); 
 let output = document.querySelector('.output');
 let encodedMsg = document.querySelector('.msg');  
-let textNoSpaces = ''; 
-let textNoSpacesNoPeriodsNoLeft = ''; 
-let textNoSpacesNoPeriodsNoQuotes = '';
+let textNoSp = ''; 
+let textNoSpNoPd = ''; 
+let textNoSpNoPdNoLQ = ''; 
+let textNoSpNoPdNoQm = '';
 let indexOfSpace = '';
 let cleanedUserInput = '';  
 let cryptograph = ''; 
 let specialCharacters = {}; 
 let specialCharArr = [];
 
-///////////////
-// Clean Input
-///////////////
-const removeExtraSpaces = (userInputText) => {
-    textNoSpaces = userInputText.trim(); 
-    return textNoSpaces;
-}
+// const removeTrailingPeriodANDQuotationMarks = (textNoSp) => {
+//     if (textNoSp.includes("\.")){
+//         textNoSpNoPd = textNoSp.substring(0, `${textNoSp.length}` -1)
+//     } else {
+//         textNoSpNoPd = textNoSp; 
+//     }
+//     if (textNoSpNoPd.includes("\"")){
+//         textNoSpNoPdNoLQ = textNoSpNoPd.substring(1);
+//     } else {
+//         textNoSpNoPdNoLQ = textNoSpNoPd; 
+//     }
+//     if (textNoSpNoPdNoLQ.includes("\"")){
+//         textNoSpNoPdNoQm = textNoSpNoPdNoLQ.substring(0, `${textNoSpNoPdNoLQ.length}` -1)
+//     } else {
+//         textNoSpNoPdNoQm = textNoSpNoPdNoLQ; 
+//     }
+//     return textNoSpNoPdNoQm; 
+// }
 
-const removePeriodsAndQuotationMarks = (textNoSpaces) => {
-    let textNoSpacesNoPeriods = ''; 
-    //Remove Periods
-    if (textNoSpaces.includes("\.")){
-        textNoSpacesNoPeriods = textNoSpaces.substring(0, `${textNoSpaces.length}` -1)
-    } else {
-        textNoSpacesNoPeriods = textNoSpaces; 
-    }
-    // Remove Left Quote Mark
-    if (textNoSpacesNoPeriods.includes("\"")){
-        textNoSpacesNoPeriodsNoLeft = textNoSpacesNoPeriods.substring(1);
-    } else {
-        textNoSpacesNoPeriodsNoLeft = textNoSpacesNoPeriods; 
-    }
-    // Remove right Quote Mark
-    if (textNoSpacesNoPeriodsNoLeft.includes("\"")){
-        textNoSpacesNoPeriodsNoQuotes = textNoSpacesNoPeriodsNoLeft.substring(0, `${textNoSpacesNoPeriodsNoLeft.length}` -1)
-    } else {
-        textNoSpacesNoPeriodsNoQuotes = textNoSpacesNoPeriodsNoLeft; 
-    }
+// In the context of the cleanInput() function:
+    // 'Sp' refers to leading and trailing spaces in the user's input, not the space in between words
+    // 'Pd' refers to the trailing period after the user's input (if applicable)
+    // 'Lq' refers to a leading quotation mark
+    // 'Qm' referes to both leading and quotation marks
     
-    return textNoSpacesNoPeriodsNoQuotes; 
+const removeSpaces = (userInputText) => {
+    textNoSp = userInputText.trim(); 
+    return textNoSp;
+}
+const removeTrailingPeriodANDQuotationMarks = (textNoSp) => {
+    textNoSp.includes("\.") ? (textNoSpNoPd = textNoSp.substring(0, `${textNoSp.length}` -1)) 
+    : textNoSpNoPd = textNoSp
+    textNoSpNoPd.includes("\"") ? textNoSpNoPdNoLQ = textNoSpNoPd.substring(1)
+    : textNoSpNoPdNoLQ = textNoSpNoPd; 
+
+    return textNoSpNoPdNoLQ.includes("\"") ? textNoSpNoPdNoQm = textNoSpNoPdNoLQ.substring(0, `${textNoSpNoPdNoLQ.length}` -1) : textNoSpNoPdNoQm = textNoSpNoPdNoLQ; 
 }
 
 const analyzeText = (cleanedUserInput) => {
     let capitalPositions = []; 
-    // this function takes note of which words are capitalized and accounts for special characters in the user input
-    // make an array that specifies the unicode code designator for each special character -> then access that array when posting the cryptograph to the DOM
+    
     for (let char in cleanedUserInput){
         const myObj = {
             pos: char,
             value: cleanedUserInput[char]
-        }
+        }   
         const code = cleanedUserInput.charCodeAt(char);  
-        
-        if (code > 47 && code < 58){
-            specialCharArr.push(myObj); 
-        } else if (code > 64 && code < 91){
-            specialCharArr.push('cap');  
-        } else if (code > 96 && code < 123){
-            specialCharArr.push(null);  
-        } else if (code > 32 && code < 48){
-            specialCharArr.push(myObj); 
-        } else if (code > 57 && code < 65){
-            specialCharArr.push(myObj); 
-        } else if (code === 32){
-            specialCharArr.push(null); 
-        } else {
-            alert('I\'m sorry, this is an invalid input. Please refresh the page & try again'); 
-        } 
-    } 
-    // capital letters -> capitals = [positions]; 
-    for (let char in cleanedUserInput){
+        code > 47 && code < 58 ? specialCharArr.push(myObj) 
+        : code > 64 && code < 91 ? specialCharArr.push('cap')  
+        : code > 96 && code < 123 ? specialCharArr.push(null)
+        : code > 32 && code < 48 ? specialCharArr.push(myObj) 
+        : code > 57 && code < 65 ? specialCharArr.push(myObj) 
+        : code === 32 ? specialCharArr.push(null)
+        : alert('I\'m sorry, this is an invalid input. Please refresh the page & try again');          
+    
         if (cleanedUserInput[char] === cleanedUserInput[char].toUpperCase() && cleanedUserInput[char] !== ' '){
             capitalPositions.push(char); 
         }
-    }
+    }        
+    // should this be return specialCharArr ?
     return specialCharacters;  
 }
 
 
-//////////////
-// CIPHER
-//////////////
+// genRandCipher()
 const alphaMap = {0:'a',1:'b',2:'c',3:'d',4:'e',5:'f',6:'g',7:'h',8:'i',9:'j',10:'k',11:'l',12:'m',13:'n',14:'o',15:'p',16:'q',17:'r',18:'s',19:'t',20:'u',21:'v',22:'w',23:'x',24:'y',25:'z'}
 
 const numMap = {a:0,b:1,c:2,d:3,e:4,f:5,g:6,h:7,i:8,j:9,k:10,l:11,m:12,n:13,o:14,p:15,q:16,r:17,s:18,t:19,u:20,v:21,w:22,x:23,y:24,z:25}
@@ -104,6 +98,7 @@ const genRandCipher = () => {
     }
 } 
 
+// encodeInputRecursively()
 let encodedArray = []; 
 const encodeInputRecursively = (inputToEncode) => {
     let arrayToEncode = inputToEncode.toLowerCase().split("");
@@ -130,9 +125,7 @@ const encodeInputRecursively = (inputToEncode) => {
     return cryptograph = encodedArray.join('');  
 }
 
-////////////////
-// Gen Boxes
-////////////////
+//genBoxes()
 const cryptoBoard = document.querySelector('.cryptoBoard'); 
 
 const genBoxes = () => {
@@ -147,7 +140,6 @@ const genBoxes = () => {
 
     let currentWordInLoop = 0; 
     for (let i = 0; i < cryptograph.length; i++){
-        // Incorporate specialCharArr
         if (specialCharArr[i] === 'cap'){ 
             const letterBox = document.createElement("div"); 
             letterBox.classList.add('letterBox'); 
@@ -174,11 +166,10 @@ const genBoxes = () => {
             currentWordInLoop += 1;             
         }
     }
-
     cryptoBoard.classList.add('active'); 
 }
 
-
+// takeScreenShot()
 const takeScreenShot = () => {
     html2canvas(document.getElementById('capture')).then(canvas => {
         document.body.appendChild(canvas); 
@@ -189,22 +180,17 @@ const takeScreenShot = () => {
     })
 }
 
-
-////////////////
-// Program Flow
-////////////////
 const cleanInput = (userInputText) => {
-    removeExtraSpaces(userInputText);
-    removePeriodsAndQuotationMarks(textNoSpaces); 
-    analyzeText(textNoSpacesNoPeriodsNoQuotes);
+    removeSpaces(userInputText);
+    removeTrailingPeriodANDQuotationMarks(textNoSp); 
+    analyzeText(textNoSpNoPdNoQm);
 }
-
 const resetInput = () => {
     input.value = ''; 
 }
 
+// Start Here
 const handleInput = (userInputText) => {
-    
     let cleanInputTime1 = performance.now();
     cleanInput(userInputText);
     let cleanInputTime2 = performance.now(); 
@@ -218,7 +204,7 @@ const handleInput = (userInputText) => {
     console.log(`Time elapsed for call to genRandCipher: ${(genRandCipherTime2 - genRandCipherTime1) / 1000} seconds`);
 
     let encodeInputRecursivelyTime1 = performance.now();
-    encodeInputRecursively(textNoSpacesNoPeriodsNoQuotes);
+    encodeInputRecursively(textNoSpNoPdNoQm);
     let encodeInputRecursivelyTime2 = performance.now(); 
     console.log(`Time elapsed for call to encodeInputRecursively: ${(encodeInputRecursivelyTime2 - encodeInputRecursivelyTime1) / 1000} seconds`);
     
