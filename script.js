@@ -70,9 +70,7 @@ const analyzeText = (cleanedUserInput) => {
         if (cleanedUserInput[char] === cleanedUserInput[char].toUpperCase() && cleanedUserInput[char] !== ' '){
             capitalPositions.push(char); 
         }
-    }        
-    // should this be return specialCharArr ?
-    return specialCharacters;  
+    }         
 }
 
 
